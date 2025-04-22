@@ -9,3 +9,5 @@ scikit-learn
 numpy
 seaborn
 matplotlib
+imbalanced-learn
+joblib
