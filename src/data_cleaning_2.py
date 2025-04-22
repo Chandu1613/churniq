@@ -1,10 +1,13 @@
 import pandas as pd
+from src.logger import log_message
 
 def data_cleaning(df):
+
     try:
+        log_message('Dropping columns...')
         df = df.drop(columns=['CustomerId','Surname'],axis=1)
     except:
-        print('Columns already dropped')
+        log_message('Columns already dropped')
     
     df['EstimatedSalary'] = df['EstimatedSalary'].astype(str).str.replace('€', '', regex=False)
     df['Balance'] = df['Balance'].astype(str).str.replace('€', '', regex=False)
@@ -17,6 +20,6 @@ def data_cleaning(df):
     if 'French' or 'FRA' in df['Geography']:
         df['Geography'] = df['Geography'].apply(lambda x:'France' if x=='French' else x)
         df['Geography'] = df['Geography'].apply(lambda x:'France' if x=='FRA' else x)
-    print('Data is cleaned...')
+    log_message('Data is cleaned...')
     
     return df
