@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Exploration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Churn Prediction</a>
+        <a href="{{ url_for('data_exploration') }}">Data Exploration</a>
+    </nav>
+    <div class="container">
+        <div class="glass-panel">
+            <h1>Data Exploration</h1>
+            <form action="{{ url_for('data_exploration') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Upload Customer Data (CSV)</label>
+                    <input type="file" id="file" name="file" accept=".csv">
+                </div>
+                <button type="submit" class="button">Upload</button>
+            </form>
+
+            {% if data_preview is defined %}
+            <h2>Data Preview</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        {% for col in data_preview.columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data_preview.to_dict(orient='records') %}
+                    <tr>
+                        {% for value in row.values() %}
+                        <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Summary Statistics</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        {% for col in summary_stats.index %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in summary_stats.to_dict(orient='records') %}
+                    <tr>
+                        {% for value in row.values() %}
+                        <td>{{ value | round(2) }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if heatmap_image %}
+            <h2>Correlation Heatmap</h2>
+            <img src="{{ url_for('static', filename=heatmap_image) }}" alt="Correlation Heatmap" style="max-width: 100%;">
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="footer">xAI © 2025</div>
+</body>
+</html>

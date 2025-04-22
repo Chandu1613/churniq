@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Customer Churn Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Churn Prediction</a>
+        <a href="{{ url_for('data_exploration') }}">Data Exploration</a>
+    </nav>
+    <div class="container">
+        <div class="glass-panel">
+            <h1>Customer Details</h1>
+            <form action="{{ url_for('index') }}" method="POST">
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="credit_score">Credit Score (300–900)</label>
+                            <input type="range" id="credit_score" name="credit_score" min="300" max="900" value="650" oninput="this.nextElementSibling.value = this.value">
+                            <output>650</output>
+                        </div>
+                        <div class="form-group">
+                            <label for="geography">Geography</label>
+                            <select id="geography" name="geography">
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Spain">Spain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <input type="radio" id="male" name="gender" value="Male" checked>
+                            <label for="male">Male</label>
+                            <input type="radio" id="female" name="gender" value="Female">
+                            <label for="female">Female</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="18" max="100" value="40">
+                        </div>
+                        <div class="form-group">
+                            <label for="tenure">Tenure (Years)</label>
+                            <input type="number" id="tenure" name="tenure" min="0" max="10" value="5">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="balance">Balance</label>
+                            <input type="number" id="balance" name="balance" min="0" max="250000" step="0.01" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label for="num_products">Number of Products</label>
+                            <input type="number" id="num_products" name="num_products" min="1" max="4" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="has_credit_card">Has Credit Card</label>
+                            <select id="has_credit_card" name="has_credit_card">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active_member">Is Active Member</label>
+                            <select id="is_active_member" name="is_active_member">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="estimated_salary">Estimated Salary</label>
+                            <input type="number" id="estimated_salary" name="estimated_salary" min="100" max="200000" step="0.01" value="50000">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="button">Predict Churn</button>
+            </form>
+
+            {% if churn_prob is defined %}
+            <h2>Prediction Results</h2>
+            <p>Churn Probability: {{ churn_prob | round(2) }}%</p>
+            <span class="churn-badge {{ 'churn' if prediction == 1 else 'stay' }}">
+                {{ '🚨 Churn Risk' if prediction == 1 else '✅ Stay' }}
+            </span>
+            {% if shap_image %}
+            <h3>Top 3 Drivers of Churn</h3>
+            <img src="{{ url_for('static', filename=shap_image) }}" alt="SHAP Chart" style="max-width: 100%;">
+            {% endif %}
+            <a href="{{ url
