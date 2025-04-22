@@ -1,4 +1,6 @@
 import pandas as pd
+import warnings
+warnings.filterwarnings("ignore")
 from src.logger import log_message
 
 def data_loading():

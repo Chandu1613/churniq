@@ -1,8 +1,10 @@
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, BaggingClassifier
 from xgboost import XGBClassifier
 from sklearn.linear_model import LogisticRegression
-import lightgbm as lgb
+from lightgbm import LGBMClassifier
 import pandas as pd
+import warnings
+warnings.filterwarnings("ignore")
 from src.logger import log_message
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, f1_score, precision_recall_curve, auc
 
@@ -13,7 +15,8 @@ def model_train_selection(X_train, X_test, y_train, y_test):
     "Gradient Boosting": GradientBoostingClassifier(random_state=42),
     "Bagging": BaggingClassifier(random_state=42),
     "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42),
-    "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42)
+    "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42),
+    "LightGBM":LGBMClassifier(random_state=42)
     }
 
     log_message('Model training and testing.....')
